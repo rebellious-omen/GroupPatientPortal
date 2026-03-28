@@ -10,103 +10,101 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GroupPatientPortal
+namespace GroupPatientPortal;
+
+public partial class RegisterForm : Form
 {
-    public partial class RegisterForm : Form
+    public RegisterForm()
     {
-        public RegisterForm()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void btnRegister_Click(object sender, EventArgs e)
+    private void btnRegister_Click(object sender, EventArgs e)
+    {
+        string fullName = txtFullName.Text;
+        string email = txtEmail.Text;
+        string password = Crypto.Password.Hash(txtPassword.Text);
+        DateTime dob;
+        string sex = cmbSex.Text;
+        string address = txtAddress.Text;
+        string telephone = txtTelephone.Text;
+
+        try
         {
-            try
+            //Validation for the empty fields in full name, email and pass
+            if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                // Get values from form
-                string fullName = txtFullName.Text;
-                string email = txtEmail.Text;
-                string password = Password.HashPassword(txtPassword.Text);
-                DateTime dob;
-                string sex = cmbSex.Text;
-                string address = txtAddress.Text;
-                string telephone = txtTelephone.Text;
-
-                //Validation for the empty fields in full name, email and pass
-                if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-                {
-                    MessageBox.Show("Please fill all required fields");
-                    return;
-                }
-
-                if (!email.Contains("@") || !email.Contains("."))
-                {
-                    MessageBox.Show("Invalid email");
-                    return;
-                }
-                if (!System.Text.RegularExpressions.Regex.IsMatch(telephone, @"^[0-9+\-\s]{7,15}$"))
-                {
-                    MessageBox.Show("Invalid telephone number");
-                    return;
-                }
-                if (address.Length < 5)
-                {
-                    MessageBox.Show("Address is too short");
-                    return;
-                }
-
-                try 
-                {
-                    dob = DateTime.Parse(mtbDob.Text);
-                }
-                catch
-                {
-                    MessageBox.Show("Invalid date of birth, enter the valid date");
-                    return;
-                }
-                SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;");
-                SqlCommand cmd = new SqlCommand(
-                    "INSERT INTO HospitalPortalTable " +
-                    "(FullName, Email, Password, DateOfBirth, Sex, Address, Telephone) " +
-                    "VALUES (@FullName, @Email, @Password, @DateOfBirth, @Sex, @Address, @Telephone)", con);
-
-                cmd.Parameters.AddWithValue("@FullName", fullName);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Password", password);
-                cmd.Parameters.AddWithValue("@DateOfBirth", dob);
-                cmd.Parameters.AddWithValue("@Sex", sex);
-                cmd.Parameters.AddWithValue("@Address", address);
-                cmd.Parameters.AddWithValue("@Telephone", telephone);
-
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-
-                MessageBox.Show("Registration successful!");
-
-                LoginForm login = new LoginForm();
-                login.Show();
-                this.Hide();
+                MessageBox.Show("Please fill all required fields");
+                return;
             }
-            catch (Exception ex)
+
+            if (!email.Contains("@") || !email.Contains("."))
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Invalid email");
+                return;
             }
-        }
-        private void lblBackToLogin_Click(object sender, EventArgs e)
-        {
-            LoginForm login = new();
+            if (!System.Text.RegularExpressions.Regex.IsMatch(telephone, @"^[0-9+\-\s]{7,15}$"))
+            {
+                MessageBox.Show("Invalid telephone number");
+                return;
+            }
+            if (address.Length < 5)
+            {
+                MessageBox.Show("Address is too short");
+                return;
+            }
+
+            try 
+            {
+                dob = DateTime.Parse(mtbDob.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid date of birth, enter the valid date");
+                return;
+            }
+            SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;");
+            SqlCommand cmd = new SqlCommand(
+                "INSERT INTO HospitalPortalTable " +
+                "(FullName, Email, Password, DateOfBirth, Sex, Address, Telephone) " +
+                "VALUES (@FullName, @Email, @Password, @DateOfBirth, @Sex, @Address, @Telephone)", con);
+
+            cmd.Parameters.AddWithValue("@FullName", fullName);
+            cmd.Parameters.AddWithValue("@Email", email);
+            cmd.Parameters.AddWithValue("@Password", password);
+            cmd.Parameters.AddWithValue("@DateOfBirth", dob);
+            cmd.Parameters.AddWithValue("@Sex", sex);
+            cmd.Parameters.AddWithValue("@Address", address);
+            cmd.Parameters.AddWithValue("@Telephone", telephone);
+
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+
+            MessageBox.Show("Registration successful!");
+
+            LoginForm login = new LoginForm();
             login.Show();
             this.Hide();
         }
-
-        private void lblText_Click(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            LoginForm login = new();
-            login.Show();
-            this.Hide();
+            MessageBox.Show("Error: " + ex.Message);
         }
     }
+    private void lblBackToLogin_Click(object sender, EventArgs e)
+    {
+        LoginForm login = new();
+        login.Show();
+        this.Hide();
+    }
+
+    private void lblText_Click(object sender, EventArgs e)
+    {
+        LoginForm login = new();
+        login.Show();
+        this.Hide();
+    }
 }
-    
+
 

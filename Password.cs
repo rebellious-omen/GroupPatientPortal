@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Security.Cryptography;
+
+namespace GroupPatientPortal.Crypto;
+
 public static class Password
 {
-    public static string HashPassword(string password)
+    public static string Hash(string password)
     {
         byte[] salt = RandomNumberGenerator.GetBytes(16);
 
@@ -16,7 +19,7 @@ public static class Password
 
         return Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
     }
-    public static bool VerifyPassword(string password, string storedHash)
+    public static bool Verify(string password, string storedHash)
     {
         if (!storedHash.Contains(":"))
             return password == storedHash;
