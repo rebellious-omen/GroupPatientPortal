@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Text.RegularExpressions;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Drawing;
@@ -9,6 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Text;
+using System.Runtime.InteropServices;
+using System.Net.Mail;
 
 namespace GroupPatientPortal;
 
@@ -38,12 +42,13 @@ public partial class RegisterForm : Form
                 return;
             }
 
-            if (!email.Contains("@") || !email.Contains("."))
+            MailAddress.TryCreate(email, out var validEmail);
+            if (validEmail == null)
             {
                 MessageBox.Show("Invalid email");
                 return;
             }
-            if (!System.Text.RegularExpressions.Regex.IsMatch(telephone, @"^[0-9+\-\s]{7,15}$"))
+            if (!Regex.IsMatch(telephone, @"^[0-9+\-\s]{7,15}$"))
             {
                 MessageBox.Show("Invalid telephone number");
                 return;
