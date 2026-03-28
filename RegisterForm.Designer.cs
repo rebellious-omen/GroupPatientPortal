@@ -155,11 +155,11 @@
             // lblName
             // 
             lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblName.Location = new System.Drawing.Point(152, 191);
+            lblName.Location = new System.Drawing.Point(150, 191);
             lblName.Name = "lblName";
-            lblName.Size = new System.Drawing.Size(88, 22);
+            lblName.Size = new System.Drawing.Size(105, 22);
             lblName.TabIndex = 25;
-            lblName.Text = "Name:";
+            lblName.Text = "Full Name:";
             // 
             // lblDob
             // 

@@ -32,31 +32,35 @@ namespace GroupPatientPortal
                 string email = txtEmail.Text;
                 string password = txtPassword.Text;
 
-                using (SqlConnection con = new SqlConnection(
-                    @"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
-                using (SqlCommand cmd = new SqlCommand(
-                    "SELECT PatientID FROM HospitalPortalTable WHERE Email = @Email AND Password = @Password", con))
+                using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
+                using (SqlCommand cmd = new SqlCommand("SELECT PatientID,Password FROM HospitalPortalTable WHERE Email = @Email", con))
                 {
                     cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Password", password);
-
                     con.Open();
-                    object result = cmd.ExecuteScalar();
-
-                    if (result != null)
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
                     {
-                        int patientId = Convert.ToInt32(result);
+                        string storedHash = reader["Password"].ToString();
 
-                        PatientPortal portal = new PatientPortal(patientId);
-                        portal.Show();
-                        this.Hide();
+                        if (Password.VerifyPassword(password, storedHash))
+                        {
+                            int patientId = Convert.ToInt32(reader["PatientID"]);
+                            PatientPortal portal = new PatientPortal(patientId);
+                            portal.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid email or password");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Invalid email or password.");
+                        MessageBox.Show("Invalid email or password");
                     }
                 }
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);

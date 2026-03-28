@@ -30,6 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PatientPortal));
             panelMain = new System.Windows.Forms.Panel();
+            btnSaveEdit = new System.Windows.Forms.Button();
+            txtHistoryEdit = new System.Windows.Forms.TextBox();
+            txtHeightEdit = new System.Windows.Forms.TextBox();
+            txtTelephoneEdit = new System.Windows.Forms.TextBox();
+            txtAddressEdit = new System.Windows.Forms.TextBox();
+            txtWeightEdit = new System.Windows.Forms.TextBox();
+            txtBloodTypeEdit = new System.Windows.Forms.TextBox();
+            btnEdit = new System.Windows.Forms.Button();
             btnExit = new System.Windows.Forms.Button();
             lblAddressValue = new System.Windows.Forms.Label();
             lblMedicationValue = new System.Windows.Forms.Label();
@@ -40,7 +48,6 @@
             lblHeightValue = new System.Windows.Forms.Label();
             lblDobValue = new System.Windows.Forms.Label();
             lblSexValue = new System.Windows.Forms.Label();
-            lblDoctor = new System.Windows.Forms.Label();
             lblWelcome = new System.Windows.Forms.Label();
             btnAppointments = new System.Windows.Forms.Button();
             btnSignOut = new System.Windows.Forms.Button();
@@ -57,6 +64,7 @@
             label1 = new System.Windows.Forms.Label();
             lblTitle = new System.Windows.Forms.Label();
             picLogo = new System.Windows.Forms.PictureBox();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
@@ -64,6 +72,14 @@
             // panelMain
             // 
             panelMain.BackColor = System.Drawing.Color.FromArgb(245, 247, 250);
+            panelMain.Controls.Add(btnSaveEdit);
+            panelMain.Controls.Add(txtHistoryEdit);
+            panelMain.Controls.Add(txtHeightEdit);
+            panelMain.Controls.Add(txtTelephoneEdit);
+            panelMain.Controls.Add(txtAddressEdit);
+            panelMain.Controls.Add(txtWeightEdit);
+            panelMain.Controls.Add(txtBloodTypeEdit);
+            panelMain.Controls.Add(btnEdit);
             panelMain.Controls.Add(btnExit);
             panelMain.Controls.Add(lblAddressValue);
             panelMain.Controls.Add(lblMedicationValue);
@@ -74,7 +90,6 @@
             panelMain.Controls.Add(lblHeightValue);
             panelMain.Controls.Add(lblDobValue);
             panelMain.Controls.Add(lblSexValue);
-            panelMain.Controls.Add(lblDoctor);
             panelMain.Controls.Add(lblWelcome);
             panelMain.Controls.Add(btnAppointments);
             panelMain.Controls.Add(btnSignOut);
@@ -98,6 +113,89 @@
             panelMain.Size = new System.Drawing.Size(700, 711);
             panelMain.TabIndex = 0;
             // 
+            // btnSaveEdit
+            // 
+            btnSaveEdit.BackColor = System.Drawing.Color.RoyalBlue;
+            btnSaveEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSaveEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            btnSaveEdit.ForeColor = System.Drawing.Color.White;
+            btnSaveEdit.Location = new System.Drawing.Point(297, 613);
+            btnSaveEdit.Name = "btnSaveEdit";
+            btnSaveEdit.Size = new System.Drawing.Size(136, 41);
+            btnSaveEdit.TabIndex = 51;
+            btnSaveEdit.Text = "Save Edit";
+            btnSaveEdit.UseVisualStyleBackColor = false;
+            btnSaveEdit.Click += btnSaveEdit_Click;
+            // 
+            // txtHistoryEdit
+            // 
+            txtHistoryEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            txtHistoryEdit.Location = new System.Drawing.Point(268, 443);
+            txtHistoryEdit.Name = "txtHistoryEdit";
+            txtHistoryEdit.Size = new System.Drawing.Size(420, 26);
+            txtHistoryEdit.TabIndex = 50;
+            txtHistoryEdit.Visible = false;
+            txtHistoryEdit.TextChanged += txtHistoryEdit_TextChanged;
+            // 
+            // txtHeightEdit
+            // 
+            txtHeightEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            txtHeightEdit.Location = new System.Drawing.Point(98, 253);
+            txtHeightEdit.Name = "txtHeightEdit";
+            txtHeightEdit.Size = new System.Drawing.Size(110, 26);
+            txtHeightEdit.TabIndex = 49;
+            txtHeightEdit.Visible = false;
+            // 
+            // txtTelephoneEdit
+            // 
+            txtTelephoneEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            txtTelephoneEdit.Location = new System.Drawing.Point(140, 290);
+            txtTelephoneEdit.Name = "txtTelephoneEdit";
+            txtTelephoneEdit.Size = new System.Drawing.Size(100, 26);
+            txtTelephoneEdit.TabIndex = 48;
+            txtTelephoneEdit.Visible = false;
+            // 
+            // txtAddressEdit
+            // 
+            txtAddressEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            txtAddressEdit.Location = new System.Drawing.Point(115, 403);
+            txtAddressEdit.Name = "txtAddressEdit";
+            txtAddressEdit.Size = new System.Drawing.Size(573, 26);
+            txtAddressEdit.TabIndex = 47;
+            txtAddressEdit.Visible = false;
+            // 
+            // txtWeightEdit
+            // 
+            txtWeightEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            txtWeightEdit.Location = new System.Drawing.Point(103, 367);
+            txtWeightEdit.Name = "txtWeightEdit";
+            txtWeightEdit.Size = new System.Drawing.Size(100, 26);
+            txtWeightEdit.TabIndex = 46;
+            txtWeightEdit.Visible = false;
+            // 
+            // txtBloodTypeEdit
+            // 
+            txtBloodTypeEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            txtBloodTypeEdit.Location = new System.Drawing.Point(145, 330);
+            txtBloodTypeEdit.Name = "txtBloodTypeEdit";
+            txtBloodTypeEdit.Size = new System.Drawing.Size(100, 26);
+            txtBloodTypeEdit.TabIndex = 45;
+            txtBloodTypeEdit.Visible = false;
+            // 
+            // btnEdit
+            // 
+            btnEdit.BackColor = System.Drawing.Color.RoyalBlue;
+            btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            btnEdit.ForeColor = System.Drawing.Color.White;
+            btnEdit.Location = new System.Drawing.Point(297, 660);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new System.Drawing.Size(136, 41);
+            btnEdit.TabIndex = 44;
+            btnEdit.Text = "Edit Records";
+            btnEdit.UseVisualStyleBackColor = false;
+            btnEdit.Click += btnEdit_Click;
+            // 
             // btnExit
             // 
             btnExit.BackColor = System.Drawing.Color.RoyalBlue;
@@ -115,23 +213,23 @@
             // lblAddressValue
             // 
             lblAddressValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblAddressValue.Location = new System.Drawing.Point(98, 405);
+            lblAddressValue.Location = new System.Drawing.Point(115, 403);
             lblAddressValue.Name = "lblAddressValue";
-            lblAddressValue.Size = new System.Drawing.Size(599, 22);
+            lblAddressValue.Size = new System.Drawing.Size(574, 22);
             lblAddressValue.TabIndex = 42;
             // 
             // lblMedicationValue
             // 
             lblMedicationValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblMedicationValue.Location = new System.Drawing.Point(268, 442);
+            lblMedicationValue.Location = new System.Drawing.Point(268, 447);
             lblMedicationValue.Name = "lblMedicationValue";
-            lblMedicationValue.Size = new System.Drawing.Size(420, 22);
+            lblMedicationValue.Size = new System.Drawing.Size(410, 22);
             lblMedicationValue.TabIndex = 40;
             // 
             // lblHistoryValue
             // 
             lblHistoryValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblHistoryValue.Location = new System.Drawing.Point(259, 478);
+            lblHistoryValue.Location = new System.Drawing.Point(268, 478);
             lblHistoryValue.Name = "lblHistoryValue";
             lblHistoryValue.Size = new System.Drawing.Size(346, 22);
             lblHistoryValue.TabIndex = 39;
@@ -139,7 +237,7 @@
             // lblWeightValue
             // 
             lblWeightValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblWeightValue.Location = new System.Drawing.Point(90, 366);
+            lblWeightValue.Location = new System.Drawing.Point(103, 366);
             lblWeightValue.Name = "lblWeightValue";
             lblWeightValue.Size = new System.Drawing.Size(105, 21);
             lblWeightValue.TabIndex = 38;
@@ -147,7 +245,7 @@
             // lblBloodTypeValue
             // 
             lblBloodTypeValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblBloodTypeValue.Location = new System.Drawing.Point(136, 330);
+            lblBloodTypeValue.Location = new System.Drawing.Point(145, 330);
             lblBloodTypeValue.Name = "lblBloodTypeValue";
             lblBloodTypeValue.Size = new System.Drawing.Size(105, 21);
             lblBloodTypeValue.TabIndex = 37;
@@ -155,7 +253,7 @@
             // lblTelephoneValue
             // 
             lblTelephoneValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblTelephoneValue.Location = new System.Drawing.Point(131, 293);
+            lblTelephoneValue.Location = new System.Drawing.Point(140, 293);
             lblTelephoneValue.Name = "lblTelephoneValue";
             lblTelephoneValue.Size = new System.Drawing.Size(105, 21);
             lblTelephoneValue.TabIndex = 36;
@@ -163,7 +261,7 @@
             // lblHeightValue
             // 
             lblHeightValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblHeightValue.Location = new System.Drawing.Point(90, 252);
+            lblHeightValue.Location = new System.Drawing.Point(98, 255);
             lblHeightValue.Name = "lblHeightValue";
             lblHeightValue.Size = new System.Drawing.Size(105, 21);
             lblHeightValue.TabIndex = 35;
@@ -171,7 +269,7 @@
             // lblDobValue
             // 
             lblDobValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblDobValue.Location = new System.Drawing.Point(142, 167);
+            lblDobValue.Location = new System.Drawing.Point(151, 189);
             lblDobValue.Name = "lblDobValue";
             lblDobValue.Size = new System.Drawing.Size(105, 21);
             lblDobValue.TabIndex = 34;
@@ -179,28 +277,17 @@
             // lblSexValue
             // 
             lblSexValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblSexValue.Location = new System.Drawing.Point(65, 210);
+            lblSexValue.Location = new System.Drawing.Point(74, 224);
             lblSexValue.Name = "lblSexValue";
             lblSexValue.Size = new System.Drawing.Size(105, 21);
             lblSexValue.TabIndex = 33;
-            // 
-            // lblDoctor
-            // 
-            lblDoctor.AutoSize = true;
-            lblDoctor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            lblDoctor.ForeColor = System.Drawing.Color.RoyalBlue;
-            lblDoctor.Location = new System.Drawing.Point(497, 53);
-            lblDoctor.Name = "lblDoctor";
-            lblDoctor.Size = new System.Drawing.Size(99, 20);
-            lblDoctor.TabIndex = 30;
-            lblDoctor.Text = "Your Doctor:";
             // 
             // lblWelcome
             // 
             lblWelcome.AutoSize = true;
             lblWelcome.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             lblWelcome.ForeColor = System.Drawing.Color.RoyalBlue;
-            lblWelcome.Location = new System.Drawing.Point(497, 24);
+            lblWelcome.Location = new System.Drawing.Point(535, 53);
             lblWelcome.Name = "lblWelcome";
             lblWelcome.Size = new System.Drawing.Size(79, 20);
             lblWelcome.TabIndex = 29;
@@ -212,7 +299,7 @@
             btnAppointments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnAppointments.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             btnAppointments.ForeColor = System.Drawing.Color.White;
-            btnAppointments.Location = new System.Drawing.Point(16, 615);
+            btnAppointments.Location = new System.Drawing.Point(550, 615);
             btnAppointments.Name = "btnAppointments";
             btnAppointments.Size = new System.Drawing.Size(138, 41);
             btnAppointments.TabIndex = 27;
@@ -226,7 +313,7 @@
             btnSignOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnSignOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             btnSignOut.ForeColor = System.Drawing.Color.White;
-            btnSignOut.Location = new System.Drawing.Point(160, 662);
+            btnSignOut.Location = new System.Drawing.Point(18, 618);
             btnSignOut.Name = "btnSignOut";
             btnSignOut.Size = new System.Drawing.Size(136, 38);
             btnSignOut.TabIndex = 26;
@@ -238,21 +325,22 @@
             // 
             btnBookAppointment.BackColor = System.Drawing.Color.RoyalBlue;
             btnBookAppointment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnBookAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            btnBookAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             btnBookAppointment.ForeColor = System.Drawing.Color.White;
-            btnBookAppointment.Location = new System.Drawing.Point(488, 646);
+            btnBookAppointment.Location = new System.Drawing.Point(550, 662);
             btnBookAppointment.Name = "btnBookAppointment";
-            btnBookAppointment.Size = new System.Drawing.Size(201, 53);
+            btnBookAppointment.Size = new System.Drawing.Size(139, 37);
             btnBookAppointment.TabIndex = 25;
             btnBookAppointment.Text = "Book an appointment";
             btnBookAppointment.UseVisualStyleBackColor = false;
+            btnBookAppointment.Click += btnBookAppointment_Click;
             // 
             // lblHistory
             // 
             lblHistory.AutoSize = true;
             lblHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblHistory.ForeColor = System.Drawing.Color.Black;
-            lblHistory.Location = new System.Drawing.Point(7, 476);
+            lblHistory.Location = new System.Drawing.Point(16, 444);
             lblHistory.Name = "lblHistory";
             lblHistory.Size = new System.Drawing.Size(246, 24);
             lblHistory.TabIndex = 22;
@@ -263,7 +351,7 @@
             lblMedication.AutoSize = true;
             lblMedication.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblMedication.ForeColor = System.Drawing.Color.Black;
-            lblMedication.Location = new System.Drawing.Point(5, 440);
+            lblMedication.Location = new System.Drawing.Point(16, 478);
             lblMedication.Name = "lblMedication";
             lblMedication.Size = new System.Drawing.Size(257, 24);
             lblMedication.TabIndex = 20;
@@ -274,7 +362,7 @@
             lblHeight.AutoSize = true;
             lblHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblHeight.ForeColor = System.Drawing.Color.Black;
-            lblHeight.Location = new System.Drawing.Point(7, 249);
+            lblHeight.Location = new System.Drawing.Point(16, 252);
             lblHeight.Name = "lblHeight";
             lblHeight.Size = new System.Drawing.Size(77, 24);
             lblHeight.TabIndex = 18;
@@ -285,7 +373,7 @@
             lblWeight.AutoSize = true;
             lblWeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblWeight.ForeColor = System.Drawing.Color.Black;
-            lblWeight.Location = new System.Drawing.Point(7, 363);
+            lblWeight.Location = new System.Drawing.Point(16, 363);
             lblWeight.Name = "lblWeight";
             lblWeight.Size = new System.Drawing.Size(81, 24);
             lblWeight.TabIndex = 16;
@@ -296,7 +384,7 @@
             lblBloodType.AutoSize = true;
             lblBloodType.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblBloodType.ForeColor = System.Drawing.Color.Black;
-            lblBloodType.Location = new System.Drawing.Point(7, 327);
+            lblBloodType.Location = new System.Drawing.Point(16, 327);
             lblBloodType.Name = "lblBloodType";
             lblBloodType.Size = new System.Drawing.Size(123, 24);
             lblBloodType.TabIndex = 14;
@@ -307,7 +395,7 @@
             lblTelephone.AutoSize = true;
             lblTelephone.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblTelephone.ForeColor = System.Drawing.Color.Black;
-            lblTelephone.Location = new System.Drawing.Point(7, 290);
+            lblTelephone.Location = new System.Drawing.Point(16, 290);
             lblTelephone.Name = "lblTelephone";
             lblTelephone.Size = new System.Drawing.Size(118, 24);
             lblTelephone.TabIndex = 11;
@@ -318,7 +406,7 @@
             lblAddress.AutoSize = true;
             lblAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblAddress.ForeColor = System.Drawing.Color.Black;
-            lblAddress.Location = new System.Drawing.Point(7, 403);
+            lblAddress.Location = new System.Drawing.Point(16, 403);
             lblAddress.Name = "lblAddress";
             lblAddress.Size = new System.Drawing.Size(93, 24);
             lblAddress.TabIndex = 7;
@@ -329,7 +417,7 @@
             lblDob.AutoSize = true;
             lblDob.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblDob.ForeColor = System.Drawing.Color.Black;
-            lblDob.Location = new System.Drawing.Point(7, 164);
+            lblDob.Location = new System.Drawing.Point(16, 189);
             lblDob.Name = "lblDob";
             lblDob.Size = new System.Drawing.Size(129, 24);
             lblDob.TabIndex = 4;
@@ -340,7 +428,7 @@
             lblSex.AutoSize = true;
             lblSex.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             lblSex.ForeColor = System.Drawing.Color.Black;
-            lblSex.Location = new System.Drawing.Point(7, 207);
+            lblSex.Location = new System.Drawing.Point(16, 221);
             lblSex.Name = "lblSex";
             lblSex.Size = new System.Drawing.Size(52, 24);
             lblSex.TabIndex = 3;
@@ -351,7 +439,7 @@
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
             label1.ForeColor = System.Drawing.Color.Black;
-            label1.Location = new System.Drawing.Point(6, 121);
+            label1.Location = new System.Drawing.Point(16, 143);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(167, 24);
             label1.TabIndex = 2;
@@ -379,6 +467,11 @@
             picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
+            // 
+            // sqlCommand1
+            // 
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
             // PatientPortal
             // 
@@ -417,7 +510,6 @@
         private System.Windows.Forms.Button btnSignOut;
         private System.Windows.Forms.Button btnBookAppointment;
         private System.Windows.Forms.Label lblWelcome;
-        private System.Windows.Forms.Label lblDoctor;
         private System.Windows.Forms.Label lblDobValue;
         private System.Windows.Forms.Label lblSexValue;
         private System.Windows.Forms.Label lblMedicationValue;
@@ -428,6 +520,15 @@
         private System.Windows.Forms.Label lblHeightValue;
         private System.Windows.Forms.Label lblAddressValue;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Button btnEdit;
+        private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private System.Windows.Forms.TextBox txtTelephoneEdit;
+        private System.Windows.Forms.TextBox txtAddressEdit;
+        private System.Windows.Forms.TextBox txtWeightEdit;
+        private System.Windows.Forms.TextBox txtBloodTypeEdit;
+        private System.Windows.Forms.TextBox txtHistoryEdit;
+        private System.Windows.Forms.TextBox txtHeightEdit;
+        private System.Windows.Forms.Button btnSaveEdit;
     }
 }
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,17 +21,15 @@ namespace GroupPatientPortal
         {
             InitializeComponent();
             _patientId = patientId;
+            btnSaveEdit.Visible = false;
         }
 
         private void LoadPatientRecord(int patientId)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(
-                    @"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
-                using (SqlCommand cmd = new SqlCommand(
-                    "SELECT DateOfBirth, Sex, Address, Telephone, BloodType, Weight, Height, Medication, History, FullName " +
-                    "FROM HospitalPortalTable WHERE PatientID = @id", con))
+                using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
+                using (SqlCommand cmd = new SqlCommand("SELECT DateOfBirth, Sex, Address, Telephone, BloodType, Weight, Height, Medication, History, FullName " + "FROM HospitalPortalTable WHERE PatientID = @id", con))
                 {
                     cmd.Parameters.AddWithValue("@id", patientId);
 
@@ -81,7 +80,9 @@ namespace GroupPatientPortal
 
         private void btnAppointments_Click(object sender, EventArgs e)
         {
-
+            ListForm portal = new(_patientId);
+            portal.Show();
+            this.Hide();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -97,6 +98,114 @@ namespace GroupPatientPortal
                 this.Close();
                 Application.Exit();
             }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            txtBloodTypeEdit.Visible = true;
+            txtTelephoneEdit.Visible = true;
+            txtWeightEdit.Visible = true;
+            txtHeightEdit.Visible = true;
+            txtAddressEdit.Visible = true;
+            txtHistoryEdit.Visible = true;
+            btnSaveEdit.Visible = true;
+
+            txtBloodTypeEdit.Text = lblBloodTypeValue.Text;
+            txtWeightEdit.Text = lblWeightValue.Text;
+            txtHeightEdit.Text = lblHeightValue.Text;
+            txtAddressEdit.Text = lblAddressValue.Text;
+            txtHistoryEdit.Text = lblHistoryValue.Text;
+            txtTelephoneEdit.Text = lblTelephoneValue.Text;
+        }
+
+        private void btnSaveEdit_Click(object sender, EventArgs e)
+        {
+            //validations
+            string[] ValidationBloodTypes = { "A+", "A-", "B+", "B-", "O-", "O+", "AB+", "AB-" };
+            if (!ValidationBloodTypes.Contains(txtBloodTypeEdit.Text.ToUpper()))
+            {
+                MessageBox.Show("Invalid Blood Type");
+                return;
+            }
+
+            if (!int.TryParse(txtWeightEdit.Text, out _))
+            {
+                MessageBox.Show("Weight must be a number");
+                return;
+            }
+
+            if (!int.TryParse(txtHeightEdit.Text, out _))
+            {
+                MessageBox.Show("Height must be a number");
+                return;
+            }
+
+            int weight = int.Parse(txtWeightEdit.Text);
+            int height = int.Parse(txtHeightEdit.Text);
+            //limit for the weight, there was people more than 500 kg 
+            if (weight < 0 || weight > 600)
+            {
+                MessageBox.Show("Invalid Weight,please try again");
+                return;
+            }
+            if (height < 0 || height > 300)
+            {
+                MessageBox.Show("Invalid Height,please try again");
+                return;
+            }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtTelephoneEdit.Text, @"^[0-9+\-\s]{7,15}$"))
+            {
+                MessageBox.Show("Invalid telephone number,please try again");
+                return;
+            }
+            if (txtAddressEdit.Text.Length < 5)
+            {
+                MessageBox.Show("Address is too short");
+                return;
+            }
+
+            using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
+            using (SqlCommand cmd = new SqlCommand("UPDATE HospitalPortalTable SET BloodType=@b, Weight=@w, Height=@h, Address=@a, Telephone=@t, History=@his WHERE PatientID=@id", con))
+            {
+                cmd.Parameters.AddWithValue("@b", txtBloodTypeEdit.Text);
+                cmd.Parameters.AddWithValue("@w", txtWeightEdit.Text);
+                cmd.Parameters.AddWithValue("@h", txtHeightEdit.Text);
+                cmd.Parameters.AddWithValue("@a", txtAddressEdit.Text);
+                cmd.Parameters.AddWithValue("@his", txtHistoryEdit.Text);
+                cmd.Parameters.AddWithValue("@t", txtTelephoneEdit.Text);
+                cmd.Parameters.AddWithValue("@id", _patientId);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                btnSaveEdit.Visible = false;
+            }
+
+            lblBloodTypeValue.Text = txtBloodTypeEdit.Text;
+            lblWeightValue.Text = txtWeightEdit.Text;
+            lblHeightValue.Text = txtHeightEdit.Text;
+            lblAddressValue.Text = txtAddressEdit.Text;
+            lblHistoryValue.Text = txtHistoryEdit.Text;
+            lblTelephoneValue.Text = txtTelephoneEdit.Text;
+
+            txtBloodTypeEdit.Visible = false;
+            txtTelephoneEdit.Visible = false;
+            txtWeightEdit.Visible = false;
+            txtHeightEdit.Visible = false;
+            txtAddressEdit.Visible = false;
+            txtHistoryEdit.Visible = false;
+            MessageBox.Show("Saved!");
+        }
+
+        private void btnBookAppointment_Click(object sender, EventArgs e)
+        {
+            AppointmentForm portal = new(_patientId);
+            portal.Show();
+            this.Hide();
+        }
+
+        private void txtHistoryEdit_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

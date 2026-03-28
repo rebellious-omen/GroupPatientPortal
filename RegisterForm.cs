@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace GroupPatientPortal
                 // Get values from form
                 string fullName = txtFullName.Text;
                 string email = txtEmail.Text;
-                string password = txtPassword.Text;
+                string password = Password.HashPassword(txtPassword.Text);
                 DateTime dob;
                 string sex = cmbSex.Text;
                 string address = txtAddress.Text;
@@ -43,6 +44,16 @@ namespace GroupPatientPortal
                     MessageBox.Show("Invalid email");
                     return;
                 }
+                if (!System.Text.RegularExpressions.Regex.IsMatch(telephone, @"^[0-9+\-\s]{7,15}$"))
+                {
+                    MessageBox.Show("Invalid telephone number");
+                    return;
+                }
+                if (address.Length < 5)
+                {
+                    MessageBox.Show("Address is too short");
+                    return;
+                }
 
                 try 
                 {
@@ -50,22 +61,15 @@ namespace GroupPatientPortal
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid date");
+                    MessageBox.Show("Invalid date of birth, enter the valid date");
                     return;
                 }
-
-
-                // Create connection
-                SqlConnection con = new SqlConnection(
-                    @"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;");
-
-                // SQL INSERT
+                SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;");
                 SqlCommand cmd = new SqlCommand(
                     "INSERT INTO HospitalPortalTable " +
                     "(FullName, Email, Password, DateOfBirth, Sex, Address, Telephone) " +
                     "VALUES (@FullName, @Email, @Password, @DateOfBirth, @Sex, @Address, @Telephone)", con);
 
-                // Add parameters
                 cmd.Parameters.AddWithValue("@FullName", fullName);
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@Password", password);
@@ -74,14 +78,12 @@ namespace GroupPatientPortal
                 cmd.Parameters.AddWithValue("@Address", address);
                 cmd.Parameters.AddWithValue("@Telephone", telephone);
 
-                // Execute
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
 
                 MessageBox.Show("Registration successful!");
 
-                // Go back to login
                 LoginForm login = new LoginForm();
                 login.Show();
                 this.Hide();
@@ -91,7 +93,6 @@ namespace GroupPatientPortal
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
-
         private void lblBackToLogin_Click(object sender, EventArgs e)
         {
             LoginForm login = new();
