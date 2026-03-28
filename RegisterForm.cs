@@ -28,46 +28,42 @@ public partial class RegisterForm : Form
         string fullName = txtFullName.Text;
         string email = txtEmail.Text;
         string password = Crypto.Password.Hash(txtPassword.Text);
-        DateTime dob;
         string sex = cmbSex.Text;
         string address = txtAddress.Text;
         string telephone = txtTelephone.Text;
-
-        try
+    
+ 
+        if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            //Validation for the empty fields in full name, email and pass
-            if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-            {
-                MessageBox.Show("Please fill all required fields");
-                return;
-            }
+            MessageBox.Show("Please fill all required fields");
+            return;
+        }
 
-            MailAddress.TryCreate(email, out var validEmail);
-            if (validEmail == null)
-            {
-                MessageBox.Show("Invalid email");
-                return;
-            }
-            if (!Regex.IsMatch(telephone, @"^[0-9+\-\s]{7,15}$"))
-            {
-                MessageBox.Show("Invalid telephone number");
-                return;
-            }
-            if (address.Length < 5)
-            {
-                MessageBox.Show("Address is too short");
-                return;
-            }
+        if (MailAddress.TryCreate(email, out _))
+        {
+            MessageBox.Show("Invalid email");
+            return;
+        }
 
-            try 
-            {
-                dob = DateTime.Parse(mtbDob.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Invalid date of birth, enter the valid date");
-                return;
-            }
+        if (!Regex.IsMatch(telephone, @"^[0-9+\-\s]{7,15}$"))
+        {
+            MessageBox.Show("Invalid telephone number");
+            return;
+        }
+
+        if (address.Length < 5)
+        {
+            MessageBox.Show("Address is too short");
+            return;
+        }
+
+        if (!DateTime.TryParse(mtbDob.Text, out var dob))
+        {
+            MessageBox.Show("Invalid date of birth, enter the valid date");
+            return;
+        }
+
+        try {
             SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;");
             SqlCommand cmd = new SqlCommand(
                 "INSERT INTO HospitalPortalTable " +
@@ -86,17 +82,19 @@ public partial class RegisterForm : Form
             cmd.ExecuteNonQuery();
             con.Close();
 
-            MessageBox.Show("Registration successful!");
-
-            LoginForm login = new LoginForm();
-            login.Show();
-            this.Hide();
         }
         catch (Exception ex)
         {
             MessageBox.Show("Error: " + ex.Message);
+            return;
         }
+
+        MessageBox.Show("Registration successful!");
+        LoginForm login = new();
+        login.Show();
+        this.Hide();
     }
+
     private void lblBackToLogin_Click(object sender, EventArgs e)
     {
         LoginForm login = new();

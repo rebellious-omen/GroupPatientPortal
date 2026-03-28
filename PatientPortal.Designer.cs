@@ -135,7 +135,6 @@
             txtHistoryEdit.Size = new System.Drawing.Size(420, 26);
             txtHistoryEdit.TabIndex = 50;
             txtHistoryEdit.Visible = false;
-            txtHistoryEdit.TextChanged += txtHistoryEdit_TextChanged;
             // 
             // txtHeightEdit
             // 

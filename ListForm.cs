@@ -24,15 +24,22 @@ public partial class ListForm : Form
     }
     private void LoadAppointments()
     {
-        using (SqlConnection con = new SqlConnection(
-            @"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
-        using (SqlCommand cmd = new SqlCommand("SELECT a.AppointmentID, d.FullName AS Doctor, a.AppointmentDate, a.Reason " +"FROM Appointments a " +"LEFT JOIN Doctors d ON a.DoctorID = d.DoctorID " + "WHERE a.PatientID=@id " + "ORDER BY a.AppointmentDate", con))
+        try
         {
-            cmd.Parameters.AddWithValue("@id", _patientId);
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            dgvAppointments.DataSource = dt;
+            using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
+            using (SqlCommand cmd = new SqlCommand("SELECT a.AppointmentID, d.FullName AS Doctor, a.AppointmentDate, a.Reason " + "FROM Appointments a " + "LEFT JOIN Doctors d ON a.DoctorID = d.DoctorID " + "WHERE a.PatientID=@id " + "ORDER BY a.AppointmentDate", con))
+            {
+                cmd.Parameters.AddWithValue("@id", _patientId);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                dgvAppointments.DataSource = dt;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Error: " + ex.Message);
+            return;
         }
     }
     private void btnBack_Click(object sender, EventArgs e)
@@ -50,16 +57,25 @@ public partial class ListForm : Form
             MessageBox.Show("Select appointment first");
             return;
         }
-        int appointmentId = Convert.ToInt32(dgvAppointments.SelectedRows[0].Cells["AppointmentID"].Value);
-        using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
-        using (SqlCommand cmd = new SqlCommand("DELETE FROM Appointments WHERE AppointmentID=@id", con))
+        try
         {
-            cmd.Parameters.AddWithValue("@id", appointmentId);
-            con.Open();
-            cmd.ExecuteNonQuery();
-            MessageBox.Show("Appointment cancelled");
-            LoadAppointments();
+            int appointmentId = Convert.ToInt32(dgvAppointments.SelectedRows[0].Cells["AppointmentID"].Value);
+            using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
+            using (SqlCommand cmd = new SqlCommand("DELETE FROM Appointments WHERE AppointmentID=@id", con))
+            {
+                cmd.Parameters.AddWithValue("@id", appointmentId);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Appointment cancelled");
+                LoadAppointments();
+            }
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Error: " + ex.Message);
+            return;
+        }
+
     }
 
     private void btnReschedule_Click(object sender, EventArgs e)

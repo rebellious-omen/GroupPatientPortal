@@ -17,13 +17,9 @@ public partial class AppointmentForm : Form
     private int _patientId;
     private int _appointmentID = 0;
 
-    public AppointmentForm(int patientId, int appointmentID)
+    public AppointmentForm(int patientId, int appointmentID) : this(patientId)
     {
-        InitializeComponent();
-        _patientId = patientId;
         _appointmentID=appointmentID;
-        dtpDate.MinDate = DateTime.Today;
-        Doctors();
     }
     public AppointmentForm(int patientId)
     {
@@ -34,16 +30,24 @@ public partial class AppointmentForm : Form
     }
     private void Doctors()
     {
-        using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
-        using (SqlCommand cmd = new SqlCommand("SELECT DoctorID, FullName FROM Doctors", con))
+        try
         {
-            con.Open();
-            SqlDataReader reader = cmd.ExecuteReader();
-            DataTable dt = new DataTable();
-            dt.Load(reader);
-            cbDoctor.DataSource = dt;
-            cbDoctor.DisplayMember = "FullName";
-            cbDoctor.ValueMember = "DoctorID";
+            using (SqlConnection con = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=HospitalPortal;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"))
+            using (SqlCommand cmd = new SqlCommand("SELECT DoctorID, FullName FROM Doctors", con))
+            {
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(reader);
+                cbDoctor.DataSource = dt;
+                cbDoctor.DisplayMember = "FullName";
+                cbDoctor.ValueMember = "DoctorID";
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Error: " + ex.Message);
+            return;
         }
     }
     private void btnConfirm_Click(object sender, EventArgs e)

@@ -20,7 +20,7 @@ public partial class LoginForm : Form
 
     private void lblSignUp_Click(object sender, EventArgs e)
     {
-        RegisterForm register = new RegisterForm();
+        RegisterForm register = new();
         register.Show();
         this.Hide();
     }
@@ -64,6 +64,7 @@ public partial class LoginForm : Form
         catch (Exception ex)
         {
             MessageBox.Show("Error: " + ex.Message);
+            return;
         }
     }
 }
