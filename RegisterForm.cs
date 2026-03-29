@@ -39,7 +39,13 @@ public partial class RegisterForm : Form
             return;
         }
 
-        if (MailAddress.TryCreate(email, out _))
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            MessageBox.Show("Email is required");
+            return;
+        }
+
+        if (!MailAddress.TryCreate(email, out _))
         {
             MessageBox.Show("Invalid email");
             return;
